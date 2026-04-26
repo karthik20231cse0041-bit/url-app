@@ -1,0 +1,40 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/url-shortener'
+      - '.'
+      - '-f'
+      - 'Dockerfile'
+    dir: 'backend'
+
+  # Push to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'gcr.io/$PROJECT_ID/url-shortener'
+    dir: 'backend'
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/run'
+    args:
+      - 'deploy'
+      - 'url-shortener'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/url-shortener'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--memory'
+      - '512Mi'
+      - '--set-env-vars'
+      - 'DATABASE_URL=sqlite:///./url_shortener.db,FLASK_ENV=production'
+
+images:
+  - 'gcr.io/$PROJECT_ID/url-shortener'
+
+timeout: '1800s'

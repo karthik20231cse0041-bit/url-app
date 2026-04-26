@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: url_shortener_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=sqlite:///./url_shortener.db
+    volumes:
+      - ./url_shortener.db:/app/url_shortener.db
+    restart: unless-stopped

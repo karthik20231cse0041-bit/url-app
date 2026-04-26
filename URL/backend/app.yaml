@@ -1,0 +1,9 @@
+runtime: python311
+
+env: standard
+
+entrypoint: gunicorn -w 4 -b 0.0.0.0:$PORT app:app
+
+env_variables:
+  FLASK_ENV: "production"
+  DATABASE_URL: "sqlite:///./url_shortener.db"
