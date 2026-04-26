@@ -8,7 +8,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application
 COPY app.py .
-COPY .env.example .env
 
 # Expose port (Cloud Run requires port from PORT env var)
 EXPOSE 8080
